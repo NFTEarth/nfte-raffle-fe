@@ -95,6 +95,7 @@ function formatBN(
   if (isSafari) {
     const partTypes = parts.map((part) => part.type)
     const partsIncludesFraction = partTypes.includes('fraction')
+    // @ts-ignore
     const partsIncludeCompactIdentifier = partTypes.includes('compact')
     if (amountFraction) {
       if (!partsIncludesFraction && !partsIncludeCompactIdentifier) {
@@ -114,6 +115,7 @@ function formatBN(
       }
     } 
     else if (!partsIncludesFraction && partsIncludeCompactIdentifier) {
+      // @ts-ignore
       const compactIdentifier = parts.find((part) => part.type === 'compact')
       const integerIndex = parts.findIndex((part) => part.type === 'integer')
       const integer = parts[integerIndex]
