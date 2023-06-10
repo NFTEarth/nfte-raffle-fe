@@ -18,7 +18,8 @@ const nextConfig = {
     ],
   },
   env: {
-    ACTIVE_RAFFLE_ID: process.env.ACTIVE_RAFFLE_ID
+    ACTIVE_RAFFLE_ID: process.env.ACTIVE_RAFFLE_ID,
+    RAFFLE_CONTRACT_ADDRESS: process.env.RAFFLE_CONTRACT_ADDRESS
   }
 }
 

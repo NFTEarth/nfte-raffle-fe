@@ -31,7 +31,7 @@ const EntryBox : FC<EntryBoxProps> = (props) => {
 
   const { writeAsync: enterRaffles, data: raffleEntryData, isLoading, error } = useContractWrite({
     mode: 'recklesslyUnprepared',
-    address: '0xcf05AE9105e39228a9Ada35eCFEF83054Ce10507',
+    address: process.env.RAFFLE_CONTRACT_ADDRESS,
     abi: NFTERaffleAbi,
     functionName: 'enterRaffles',
     args: [new Array(buyAmount).fill([process.env.ACTIVE_RAFFLE_ID, index])],
