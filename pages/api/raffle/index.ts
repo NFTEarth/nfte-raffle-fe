@@ -7,7 +7,7 @@ import RaffleABI from 'abi/raffleABI.json'
 const sdk = require('api')('@reservoirprotocol/v3.0#dun2q9vlij245g9');
 
 sdk.auth(process.env.RESERVOIR_API_KEY);
-sdk.server('https://api.reservoir.tools');
+sdk.server(process.env.RESERVOIR_API_BASE);
 
 const interval = 1000 * 10;
 let raffle: any = {};
