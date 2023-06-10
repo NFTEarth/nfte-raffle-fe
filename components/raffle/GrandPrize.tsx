@@ -26,7 +26,7 @@ const GrandPrize = ({prizes, tokens} : GrandPrizeProps) => {
       <Box css={{ borderRadius: 20, backgroundColor: '#222', padding: 12 }}>
         <Box css={{ borderRadius: 15, overflow: 'hidden' }}>
           <Image
-            src={token?.token?.imageSmall || '/SmoleBrainsV2.png'}
+            src={token?.token?.imageSmall || '/SmolBrainsV2.png'}
             alt="Grand Prize"
             width={312}
             height={312}
