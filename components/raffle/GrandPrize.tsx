@@ -17,7 +17,7 @@ const GrandPrize = ({prizes, tokens} : GrandPrizeProps) => {
   return (
     <Box css={{ backgroundColor: 'orange', borderRadius: 20, p: 2, height: 'fit-content' }}>
       <Flex direction="row" align="center" css={{ px: 20, py: 10 }} justify="between">
-        <Text style="h4">Grand Price</Text>
+        <Text style="h4">Grand Prize</Text>
         <FontAwesomeIcon
           size="2x"
           icon={faCircleDollarToSlot}
@@ -26,8 +26,8 @@ const GrandPrize = ({prizes, tokens} : GrandPrizeProps) => {
       <Box css={{ borderRadius: 20, backgroundColor: '#222', padding: 12 }}>
         <Box css={{ borderRadius: 15, overflow: 'hidden' }}>
           <Image
-            src={token?.token?.imageSmall || '/nftearth-icon.png'}
-            alt="Grand Reward"
+            src={token?.token?.imageSmall || '/SmoleBrainsV2.png'}
+            alt="Grand Prize"
             width={312}
             height={312}
             style={{
