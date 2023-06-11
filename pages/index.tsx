@@ -287,7 +287,12 @@ export default function Home() {
                 <Text style="h6">Processing your entry...</Text>
               )}
               {!!error && (
-                <Text style="h6" css={{ color: 'red' }}>{(error as any)?.reason || error?.data?.message || error?.message}</Text>
+                <Text style="h6" css={{ color: 'red' }}>{(
+                  error as any)?.reason ||
+                  // @ts-ignore
+                  error?.data?.message ||
+                  error?.message
+                }</Text>
               )}
               {isSuccess && (
                 <>
