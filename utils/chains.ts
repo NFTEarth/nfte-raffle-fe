@@ -1,5 +1,5 @@
 // import { constants } from 'ethers'
-import { arbitrum } from 'wagmi/chains'
+import { mainnet, arbitrum } from 'wagmi/chains'
 import {Chain} from "@wagmi/chains"
 
 //CONFIGURABLE: The default export controls the supported chains for the marketplace. Removing
@@ -11,10 +11,14 @@ export interface MarketChain extends Chain {
 }
 
 export const DefaultChain: MarketChain = {
-  ...arbitrum,
+  ...mainnet,
   iconUrl: `/images/currency/0x6c0c4816098e13cacfc7ed68da3e89d0066e8893.png`,
 }
 
 export default [
   DefaultChain,
+  {
+    ...arbitrum,
+    iconUrl: `/images/currency/0x6c0c4816098e13cacfc7ed68da3e89d0066e8893.png`,
+  }
 ] as MarketChain[]

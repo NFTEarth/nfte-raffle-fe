@@ -13,7 +13,10 @@ import {
   redDark,
   red,
   blackA,
+  violet,
+  mauve
 } from '@radix-ui/colors'
+
 import { createStitches } from '@stitches/react'
 import type * as Stitches from '@stitches/react'
 import { reset } from 'utils/css/reset'
@@ -41,6 +44,8 @@ export const { createTheme, keyframes, styled, globalCss, getCssText } =
         ...green,
         ...lime,
         ...limeA,
+        ...violet,
+        ...mauve,
         //Aliases
 
         //Primary

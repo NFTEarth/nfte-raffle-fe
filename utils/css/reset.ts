@@ -340,5 +340,65 @@ Ensure the default browser behavior of the `hidden` attribute.
   '.masonry-grid_column': {
     paddingLeft: 30, /* gutter size */
     backgroundClip: 'padding-box'
+  },
+
+  '.TabsRoot': {
+    display: 'flex',
+    flexDirection: 'column',
+    boxShadow: '0 2px 10px $blackA4',
+    maxWidth: 840,
+    flex: 1
+  },
+
+  '.TabsList': {
+    flexShrink: 0,
+    display: 'flex'
+  },
+
+  '.TabsTrigger': {
+    fontFamily: 'inherit',
+    backgroundColor: 'white',
+    padding: '0 20px',
+    height: 45,
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '15px',
+    fontWeight: 'bold',
+    lineHeight: 1,
+    color: '$mauve11',
+    userSelect: 'none'
+  },
+
+
+  '.TabsTrigger:first-child': {
+    borderTopLeftRadius: ' 6px',
+    borderBottomLeftRadius: ' 6px'
+  },
+
+  '.TabsTrigger:last-child': {
+    borderTopRightRadius: '6px',
+    borderBottomRightRadius: ' 6px'
+  },
+
+  '.TabsTrigger:hover': {
+    color: '$violet11'
+  },
+
+  '.TabsTrigger[data-state="active"]': {
+    color: '$violet11',
+    backgroundColor: '#ddd'
+  },
+
+  '.TabsTrigger:focus': {
+    position: 'relative'
+  },
+
+  '.TabsContent': {
+    flexGrow: 1,
+    borderBottomLeftRadius: '6px',
+    borderBottomRightRadius: '6px',
+    outline: 'none'
   }
 }

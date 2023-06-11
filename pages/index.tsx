@@ -7,10 +7,12 @@ import Link from "next/link";
 import {faTwitter} from "@fortawesome/free-brands-svg-icons";
 import {
   useAccount,
-  useContractWrite,
+  useContractWrite, useNetwork, useSwitchNetwork,
   useWaitForTransaction
 } from "wagmi";
+
 import * as Dialog from '@radix-ui/react-dialog'
+import * as Tabs from '@radix-ui/react-tabs'
 import Layout from "components/Layout";
 import ProgressBar from "components/ProgressBar";
 import GrandPrize from "components/raffle/GrandPrize";
@@ -23,15 +25,18 @@ import useRaffleEntries from "hooks/useRaffleEntries";
 
 import NFTERaffleAbi from 'abi/raffleABI.json'
 import useRaffleStats from "../hooks/useRaffleStats";
-import EntryBox from "../components/raffle/EntryBox";
 import TokenPrize from "../components/raffle/TokenPrize";
-
+import EntryTab from "../components/raffle/EntryTab";
+import HistoryTab from "../components/raffle/HistoryTab";
+import useCountdown from "../hooks/useCountdown";
+import {formatNumber} from "../utils/numbers";
 
 export default function Home() {
   const { address } = useAccount();
+  const { chain: activeChain } = useNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork();
   const entryRef = useRef<HTMLDivElement | null>();
   const raffleData = useRaffle(process.env.ACTIVE_RAFFLE_ID as string)
-  const [txHash, setTxHash] = useState<`0x${string}` | undefined>()
   const { total = 0 } = useRaffleEntries(process.env.ACTIVE_RAFFLE_ID as string) || {}
   const {
     amountPaid = {
@@ -57,20 +62,61 @@ export default function Home() {
     tokens = []
   } = raffleData || {};
 
-  const [error, setError] = useState<any | undefined>()
+  const [days, hours, minutes, seconds] = useCountdown(cutoffTime * 1000)
   const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [buyAmount, setBuyAmount] = useState(1);
+  const [entryIndex, setEntryIndex] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [requestIndex, setRequestIndex] = useState(0);
+
+  const { writeAsync: enterRaffles, data: raffleEntryData, isLoading, error } = useContractWrite({
+    mode: 'recklesslyUnprepared',
+    address: process.env.RAFFLE_CONTRACT_ADDRESS as `0x${string}`,
+    abi: NFTERaffleAbi,
+    functionName: 'enterRaffles',
+    args: [new Array(buyAmount).fill([process.env.ACTIVE_RAFFLE_ID, entryIndex])],
+    overrides: {
+      from: address,
+      value: totalPrice,
+    }
+  })
   const { isLoading: isLoadingTransaction, isSuccess = true, data: txData } = useWaitForTransaction({
-    hash: txHash,
+    hash: raffleEntryData?.hash,
   })
 
   useEffect(() => {
     setOpen(!!error || isLoading || isLoadingTransaction || isSuccess);
   }, [error, isLoading, isLoadingTransaction, isSuccess])
 
+  useEffect(() => {
+    (async () => {
+      if (switchNetworkAsync && activeChain?.id !== parseInt(process.env.CHAIN_ID as string)) {
+        const chain = await switchNetworkAsync(parseInt(process.env.CHAIN_ID as string))
+        if (chain.id !== parseInt(process.env.CHAIN_ID as string)) {
+          return false
+        }
+      }
+
+      console.log({
+        buyAmount,
+        entryIndex,
+        totalPrice
+      })
+
+      enterRaffles?.()
+    })()
+  }, [requestIndex])
+
+  const handleEntry = (data: any) => {
+    setBuyAmount(data.amount);
+    setEntryIndex(data.index);
+    setTotalPrice(data.total);
+    setRequestIndex(requestIndex+1);
+  }
+
   const tweetText = `I just joined $NFTE #Raffle on @NFTEarth_L2!\n\n🎉 LFG #NFTE is #BetterThanBlue 🎉\n\n`
 
-
+  // @ts-ignore
   return (
     <Layout>
       <Box
@@ -91,13 +137,14 @@ export default function Home() {
             <Flex
               direction="row"
               align="center"
+              justify="center"
               css={{
                 gap: '0.5rem',
                 flexWrap: 'wrap',
                 textAlign: 'center'
               }}>
               <Text style="h3">{`Only `}</Text>
-              <Text style="h3" css={{ color: '$primary9' }}>{minimumEntries - total}</Text>
+              <Text style="h3" css={{ color: '$primary9' }}>{formatNumber(minimumEntries - total)}</Text>
               <Text style="h3">{` entries until the raffle starts`}</Text>
             </Flex>
             <Flex direction="column" css={{
@@ -138,52 +185,47 @@ export default function Home() {
               }}>Enter Now</Button>
             </Flex>
             <Flex
-              direction="row"
               align="center"
+              justify="center"
               css={{
-                mt: '$6',
-                gap: '0.5rem',
-                flexWrap: 'wrap',
-                textAlign: 'center'
-              }}>
-              <Text style="h5">{`You can buy up to `}</Text>
-              <Text style="h5" css={{ color: '$primary9' }}>{maximumEntriesPerParticipant - entriesCount}</Text>
-              <Text style="h5">{` entries until the raffle starts`}</Text>
-            </Flex>
-            <Flex direction="column" css={{
-              width: '100%',
-              '@bp800': {
-                width: '50%'
-              }
-            }}>
-              <Flex justify="end">
-                <Text style="body2">{`${entriesCount}/${maximumEntriesPerParticipant}`}</Text>
-              </Flex>
-              <ProgressBar percentage={(entriesCount / maximumEntriesPerParticipant) * 100} />
-            </Flex>
-          </Flex>
-          <Flex ref={r => entryRef.current = r} align="center" justify="center" css={{ flex: 1 }}>
-            <Grid
-              css={{
-                flex: 1,
-                maxWidth: 580,
-                mt: 50,
-                gap: 10,
-                gridTemplateColumns: 'repeat(2, 1fr)'
+                flexDirection: 'column',
+                textAlign: 'center',
+                '@bp800': {
+                  gap: 10,
+                  flexDirection: 'row',
+                }
               }}
             >
-              {pricing.map((price: any, i: number) => (
-                <EntryBox
-                  key={`raffle-entry-${i}`}
-                  index={i}
-                  setError={setError}
-                  setHash={setTxHash}
-                  setLoading={setIsLoading}
-                  maxPerWallet={maximumEntriesPerParticipant - entriesCount}
-                  pricing={price}
+              <Text>{`If the minimum number of entries isn't met in`}</Text>
+              <Text color="success">{`${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`}</Text>
+              <Text>{`you will be able to collect a refund.`}</Text>
+            </Flex>
+          </Flex>
+          <Flex justify="center">
+            <Tabs.Root className="TabsRoot" defaultValue="tab1" style={{ marginTop: 80 }}>
+              <Tabs.List className="TabsList" aria-label="Manage your account">
+                <Tabs.Trigger className="TabsTrigger" value="tab1">
+                  Buy Entries
+                </Tabs.Trigger>
+                <Tabs.Trigger className="TabsTrigger" value="tab2">
+                  My History
+                </Tabs.Trigger>
+              </Tabs.List>
+              <Tabs.Content className="TabsContent" value="tab1">
+                <EntryTab
+                  handleEntry={handleEntry}
+                  {...{
+                    entryRef,
+                    maximumEntriesPerParticipant,
+                    entriesCount,
+                    pricing,
+                  }}
                 />
-              ))}
-            </Grid>
+              </Tabs.Content>
+              <Tabs.Content className="TabsContent" value="tab2">
+                <HistoryTab />
+              </Tabs.Content>
+            </Tabs.Root>
           </Flex>
         </Box>
       </Box>
