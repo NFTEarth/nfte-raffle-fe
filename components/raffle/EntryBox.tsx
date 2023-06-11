@@ -1,16 +1,14 @@
 import {FC, useEffect, useState} from "react";
 import {Flex, Text, Box, Button, Input} from "components/primitives";
 import { ethers } from "ethers";
-import {useAccount, useContractWrite, useNetwork, useSwitchNetwork} from "wagmi";
+import {useAccount, useContractWrite, useNetwork, usePrepareContractWrite, useSwitchNetwork} from "wagmi";
 import NFTERaffleAbi from "../../abi/raffleABI.json";
 
 type EntryBoxProps = {
   index: number;
   maxPerWallet: number;
-  setHash: any;
-  setError: any;
-  setLoading: any;
   pricing: any;
+  handleEntry: any;
 }
 
 const EntryBox : FC<EntryBoxProps> = (props) => {
@@ -18,57 +16,32 @@ const EntryBox : FC<EntryBoxProps> = (props) => {
     index,
     maxPerWallet,
     pricing,
-    setHash,
-    setError,
-    setLoading
+    handleEntry,
   } = props;
   const { address } = useAccount();
-  const { chain: activeChain } = useNetwork()
-  const { switchNetworkAsync } = useSwitchNetwork();
   const { entriesCount = 0, price = { type: 'BigNumber', hex: '0x0' } } = pricing || {}
-  const [buyAmount, setBuyAmount] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(ethers.utils.parseUnits(ethers.BigNumber.from(price.hex).toString(), 'wei'));
-
-  const { writeAsync: enterRaffles, data: raffleEntryData, isLoading, error } = useContractWrite({
-    mode: 'recklesslyUnprepared',
-    address: process.env.RAFFLE_CONTRACT_ADDRESS,
-    abi: NFTERaffleAbi,
-    functionName: 'enterRaffles',
-    args: [new Array(buyAmount).fill([process.env.ACTIVE_RAFFLE_ID, index])],
-    overrides: {
-      from: address,
-      value: totalPrice,
-    }
-  })
-
-  useEffect(() => {
-    setError(error);
-    setLoading(isLoading);
-    setHash(raffleEntryData?.hash);
-  }, [raffleEntryData, isLoading, error])
+  const [amount, setAmount] = useState(1);
+  const [total, setTotal] = useState(ethers.utils.parseUnits(ethers.BigNumber.from(price.hex).toString(), 'wei'));
 
   const handleSetAmount = (newAmount: number) => {
     if ((newAmount * entriesCount) > maxPerWallet) {
-      newAmount = maxPerWallet / entriesCount;
+      newAmount = Math.round(maxPerWallet / entriesCount);
     }
 
     if (newAmount < 1) {
       newAmount = 1;
     }
 
-    setTotalPrice(ethers.utils.parseUnits(ethers.BigNumber.from(price.hex).toString(), 'wei').mul(buyAmount))
-    setBuyAmount(newAmount);
+    setTotal(ethers.utils.parseUnits(ethers.BigNumber.from(price.hex).toString(), 'wei').mul(newAmount))
+    setAmount(newAmount);
   }
 
   const doHandleEntry = async () => {
-    if (switchNetworkAsync && activeChain?.id !== 42161) {
-      const chain = await switchNetworkAsync(42161)
-      if (chain.id !== 42161) {
-        return false
-      }
-    }
-
-    enterRaffles()
+    handleEntry({
+      index,
+      amount,
+      total
+    })
   }
 
   return (
@@ -84,11 +57,11 @@ const EntryBox : FC<EntryBoxProps> = (props) => {
               minWidth: '3rem',
               justifyContent: 'center'
             }}
-            onClick={() => handleSetAmount(buyAmount - 1)}
+            onClick={() => handleSetAmount(amount - 1)}
           >-</Button>
           <Input
-            value={buyAmount}
-            onChange={(e) => setBuyAmount(parseInt(e.target.value))}
+            value={amount}
+            onChange={(e) => setAmount(parseInt(e.target.value))}
             css={{
               width: 30,
               textAlign: 'center'
@@ -101,7 +74,7 @@ const EntryBox : FC<EntryBoxProps> = (props) => {
               minWidth: '3rem',
               justifyContent: 'center'
             }}
-            onClick={() => handleSetAmount(buyAmount + 1)}
+            onClick={() => handleSetAmount(amount + 1)}
           >+</Button>
         </Flex>
         <Button
@@ -111,7 +84,7 @@ const EntryBox : FC<EntryBoxProps> = (props) => {
             justifyContent: 'center'
           }}
           onClick={doHandleEntry}
-        >{ethers.utils.formatEther(totalPrice)}</Button>
+        >{ethers.utils.formatEther(total)}</Button>
       </Flex>
     </Flex>
   )

@@ -18,6 +18,8 @@ const nextConfig = {
     ],
   },
   env: {
+    CHAIN: process.env.CHAIN,
+    CHAIN_ID: process.env.CHAIN_ID,
     ACTIVE_RAFFLE_ID: process.env.ACTIVE_RAFFLE_ID,
     RAFFLE_CONTRACT_ADDRESS: process.env.RAFFLE_CONTRACT_ADDRESS
   }

@@ -30,6 +30,6 @@ export default async function handler(
       currentEntryIndex,
       participant
     })),
-    total: entries[entries.length - 1]?.currentEntryIndex || -1 + 1
+    total: (entries[entries.length - 1]?.currentEntryIndex || -1) + 1
   })
 }

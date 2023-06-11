@@ -1,4 +1,4 @@
-import {Box, Flex, FormatCryptoCurrency, Text} from "../primitives";
+import {Box, Flex, FormatCryptoCurrency, Grid, Text} from "../primitives";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleDollarToSlot} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
@@ -56,7 +56,14 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
           return (
             <Flex key={`nft-prize-collection-${prizes[0].prizeAddress}`} css={{ flexDirection: 'column', gap: 10 }}>
               <Text style="body1" css={{ fontWeight: 'bold' }}>{prizes[0]?.token?.token?.collection?.name}</Text>
-              <Flex align="center" justify="start" css={{ gap: 20, flexWrap: 'wrap' }}>
+              <Grid align="center" justify="start" css={{
+                gap: 20,
+                flexWrap: 'wrap',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                '@bp800': {
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                }
+              }}>
                 {prizes.map((prize: any, i: number) => {
 
                   return (
@@ -68,7 +75,8 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
                           width={182}
                           height={182}
                           style={{
-                            backgroundColor: '#fff'
+                            backgroundColor: '#fff',
+                            maxWidth: '100%'
                           }}/>
                       </Box>
                       <Flex direction="column" css={{ mt: '$2', gap: 5 }}>
@@ -84,7 +92,7 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
                     </Box>
                   )
                 })}
-              </Flex>
+              </Grid>
             </Flex>
           )
         })}
