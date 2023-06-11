@@ -89,6 +89,10 @@ export default function Home() {
   }, [error, isLoading, isLoadingTransaction, isSuccess])
 
   useEffect(() => {
+    if (requestIndex === 0) {
+      return;
+    }
+
     (async () => {
       if (switchNetworkAsync && activeChain?.id !== parseInt(process.env.CHAIN_ID as string)) {
         const chain = await switchNetworkAsync(parseInt(process.env.CHAIN_ID as string))

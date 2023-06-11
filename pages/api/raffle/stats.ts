@@ -5,7 +5,7 @@ import RaffleABI from 'abi/raffleABI.json'
 
 type Data = any
 
-export default async function handler(
+export default async function statsHandler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {

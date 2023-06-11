@@ -1,25 +1,32 @@
 import {FC} from "react";
-import { Flex,Text, TableCell, TableRow, HeaderRow, FormatCryptoCurrency} from "components/primitives";
+import { Flex,Text, TableCell, TableRow, HeaderRow} from "components/primitives";
 import {useTheme} from "next-themes";
 import {useMediaQuery} from "react-responsive";
+import useRaffleHistory from "hooks/useRaffleHistory";
+import {useAccount, useNetwork} from "wagmi";
+import {formatNumber} from "../../utils/numbers";
+import Link from "next/link";
+import chains from "../../utils/chains";
 
-const desktopTemplateColumns = '1fr repeat(3, .5fr)'
-const mobileTemplateColumns = '1fr repeat(2, .5fr)'
+const desktopTemplateColumns = 'repeat(3, 1fr) .5fr'
+const mobileTemplateColumns = 'repeat(2, 1fr) .5fr'
 
-const HistoryTab = (props: any) => {
-  const { entries = [], isValidating } = props;
+const HistoryTab = () => {
+  const { address } = useAccount()
+  const { data: logs, isValidating } = useRaffleHistory(process.env.ACTIVE_RAFFLE_ID as string, '0x89E50978d2B3d60D39B5C1728Ae4263671a343e4') || {}
+
   return (
-    <Flex css={{ my: 20 }}>
+    <Flex direction="column" css={{ my: 20 }}>
       <Flex
         direction="column"
         css={{ width: '100%', maxHeight: 300, overflowY: 'auto', pb: '$2' }}
       >
         <TableHeading />
-        {entries.map((entry: any, i: number) => {
+        {(logs || []).map((log: any, i: number) => {
           return (
-            <ListingTableRow
+            <LogTableRow
               key={`entry-${i}`}
-              entry={entry}
+              log={log}
             />
           )
         })}
@@ -33,50 +40,53 @@ const HistoryTab = (props: any) => {
   )
 };
 
-type ListingTableRowProps = {
-  entry: any
+type LogTableRowProps = {
+  log: any
 }
 
-const ListingTableRow: FC<ListingTableRowProps> = ({
-                                                     entry
-                                                   }) => {
+const LogTableRow: FC<LogTableRowProps> = ({ log }) => {
   const isSmallDevice = useMediaQuery({ maxWidth: 900 })
+  const { chain } = useNetwork()
   const { theme } = useTheme()
 
   return (
     <TableRow
-      key={entry}
+      key={log.transactionHash}
       css={{
         gridTemplateColumns: isSmallDevice ? mobileTemplateColumns : desktopTemplateColumns,
         borderBottomColor: theme === 'light'
           ? '$primary11'
           : '$primary6',
+        'div:first-child': {
+          paddingLeft: '$2',
+        },
+        'div:last-child': {
+          paddingRight: '$2',
+        },
       }}
     >
       <TableCell css={{ pl: '$2', py: '$3' }}>
-        <FormatCryptoCurrency
-          amount={entry?.price?.amount?.native}
-          logoHeight={14}
-          textStyle={'subtitle2'}
-          maximumFractionDigits={4}
-        />
+        <Flex align="center" justify="start">
+          <Text style="subtitle2">{parseInt(log.raffleId.hex)}</Text>
+        </Flex>
+      </TableCell>
+      <TableCell css={{ pl: '$2', py: '$3' }}>
+        <Flex align="center" justify="center">
+          <Text style="subtitle2">{formatNumber(log.entriesCount)}</Text>
+        </Flex>
       </TableCell>
       {!isSmallDevice && (
         <TableCell css={{ pl: '$2', py: '$3' }}>
-          <Text style="subtitle2">
-            {entry?.quantityRemaining}
-          </Text>
+          <Flex align="center" justify="end">
+            <Text style="subtitle2">{log.blockNumber}</Text>
+          </Flex>
         </TableCell>
       )}
       <TableCell css={{ pl: '$2', py: '$3' }}>
-        <Text style="subtitle2"></Text>
-      </TableCell>
-      <TableCell css={{ pl: '$2', py: '$3' }}>
-        <Text style="subtitle2"></Text>
-      </TableCell>
-      <TableCell css={{ pl: '$2', py: '$3' }}>
         <Flex align="center" justify="end">
-
+          <Link href={`${chain?.blockExplorers?.default.url}/tx/${log.transactionHash}`} target="_blank">
+            <Text style="subtitle2" color="success">View</Text>
+          </Link>
         </Flex>
       </TableCell>
     </TableRow>
@@ -87,7 +97,7 @@ const ListingTableRow: FC<ListingTableRowProps> = ({
 const TableHeading = () => {
   const { theme } = useTheme()
   const isSmallDevice = useMediaQuery({ maxWidth: 900 })
-  const headings = isSmallDevice ? ['Raffle No.', 'Result', 'Date'] : ['Raffle No.', 'Total Entries Bought', 'Result', 'Date']
+  const headings = isSmallDevice ? ['Raffle No.', 'Total Entries Bought', ''] : ['Raffle No.', 'Total Entries Bought', 'Block', '']
   return (
     <HeaderRow
       css={{
@@ -98,6 +108,12 @@ const TableHeading = () => {
         backgroundColor: theme === 'light'
           ? '$primary10'
           : '$primary5',
+        'div:first-child': {
+          paddingLeft: '$2',
+        },
+        'div:last-child': {
+          paddingRight: '$2',
+        },
       }}
     >
       {headings.map((heading) => (

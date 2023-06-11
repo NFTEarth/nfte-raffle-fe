@@ -10,7 +10,7 @@ let entries: any
 
 type Data = any
 
-export default async function handler(
+export default async function entriesHandler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
