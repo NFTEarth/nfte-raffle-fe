@@ -1,19 +1,19 @@
 import {FC} from "react";
+import {useAccount, useNetwork} from "wagmi";
 import { Flex,Text, TableCell, TableRow, HeaderRow} from "components/primitives";
 import {useTheme} from "next-themes";
 import {useMediaQuery} from "react-responsive";
-import useRaffleHistory from "hooks/useRaffleHistory";
-import {useAccount, useNetwork} from "wagmi";
-import {formatNumber} from "../../utils/numbers";
 import Link from "next/link";
-import chains from "../../utils/chains";
+
+import useRaffleHistory from "hooks/useRaffleHistory";
+import {formatNumber} from "utils/numbers";
 
 const desktopTemplateColumns = 'repeat(3, 1fr) .5fr'
 const mobileTemplateColumns = 'repeat(2, 1fr) .5fr'
 
 const HistoryTab = () => {
   const { address } = useAccount()
-  const { data: logs, isValidating } = useRaffleHistory(process.env.ACTIVE_RAFFLE_ID as string, '0x89E50978d2B3d60D39B5C1728Ae4263671a343e4') || {}
+  const { data: logs, isValidating } = useRaffleHistory(process.env.ACTIVE_RAFFLE_ID as string, address) || {}
 
   return (
     <Flex direction="column" css={{ my: 20 }}>
