@@ -39,7 +39,7 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
   return (
     <Box css={{ backgroundColor: '$primary11', borderRadius: 20, flex: 1, p: 2 }}>
       <Flex direction="row" align="center" css={{ px: 20, py: 10 }} justify="between">
-        <Text style="h4">{`(${nftPrizes.length}) More NFTs You Can Win`}</Text>
+        <Text style="h4">{`(${nftPrizes.length}) More NFTs You Can Win!`}</Text>
         <FormatCryptoCurrency
           amount={totalPrizeEth}
           address={'0x0000000000000000000000000000000000000000'}
@@ -70,7 +70,7 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
                     <Box key={`nft-prize-${prize.prizeAddress}-${i}`}>
                       <Box css={{ borderRadius: 15, overflow: 'hidden' }}>
                         <Image
-                          src={prize?.token?.token?.imageSmall || '/nftearth-icon.png'}
+                          src={prize?.token?.token?.imageSmall || '/earthlings-4444.png'}
                           alt="NFT Reward"
                           width={182}
                           height={182}
