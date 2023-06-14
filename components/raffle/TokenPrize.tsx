@@ -19,7 +19,7 @@ const TokenPrize = ({prizes} : TokenPrizeProps) => {
   return (
     <Box css={{ backgroundColor: 'orange', borderRadius: 20, p: 2, height: 'fit-content' }}>
       <Flex direction="row" align="center" css={{ px: 20, py: 10 }} justify="between">
-        <Text style="h4">{`${winnersCount}x (${formatNumber(ethers.utils.formatEther(prizeAmountWei).replace(/\.0$/, ''))}) NFTE Tokens to Be Won`}</Text>
+        <Text style="h4">{`${winnersCount}x (${formatNumber(ethers.utils.formatEther(prizeAmountWei).replace(/\.0$/, ''))})Winners of 10,000 NFTE Tokens to Be Won`}</Text>
       </Flex>
       <Box css={{ borderRadius: 20, backgroundColor: '#222', padding: 20 }}>
         <Flex direction="row" align="center" css={{ mt: '$2', gap: 30 }}>
