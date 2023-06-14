@@ -28,7 +28,7 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
       }
 
       nftPrizes[i].token = tokens.find((t: any) => t.token.contract === nftPrizes[i].prizeAddress.toLowerCase() && t.token.tokenId === parseInt(nftPrizes[i].prizeId.hex).toString())
-      totalEth += parseFloat((nftPrizes[i]?.token?.market?.floorAsk?.price || nftPrizes[i]?.token?.token?.lastSale?.price)?.amount.native)
+      totalEth += parseFloat((nftPrizes[i]?.token?.market?.floorAsk?.price || nftPrizes[i]?.token?.token?.lastSale?.price)?.amount.native || 0)
       nftPrizeCollections[nftPrizes[i].prizeAddress].push(nftPrizes[i]);
     }
 
@@ -40,14 +40,16 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
     <Box css={{ backgroundColor: '$primary11', borderRadius: 20, flex: 1, p: 2 }}>
       <Flex direction="row" align="center" css={{ px: 20, py: 10 }} justify="between">
         <Text style="h4">{`(${nftPrizes.length}) More NFTs You Can Win`}</Text>
-        <FormatCryptoCurrency
-          amount={totalPrizeEth}
-          address={'0x0000000000000000000000000000000000000000'}
-          decimals={16}
-          logoHeight={16}
-          maximumFractionDigits={2}
-          textStyle="h5"
-        />
+        {totalPrizeEth > 0 && (
+          <FormatCryptoCurrency
+            amount={totalPrizeEth}
+            address={'0x0000000000000000000000000000000000000000'}
+            decimals={16}
+            logoHeight={16}
+            maximumFractionDigits={2}
+            textStyle="h5"
+          />
+        )}
       </Flex>
       <Flex css={{ borderRadius: 20, backgroundColor: '#222', padding: 12, gap: 20, flexDirection: 'column' }}>
         {Object.keys(NFTPrizeCollections).map((collection) => {
