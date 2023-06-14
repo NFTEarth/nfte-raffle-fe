@@ -118,7 +118,7 @@ export default function Home() {
     setRequestIndex(requestIndex+1);
   }
 
-  const tweetText = `I just joined $NFTE #Raffle on @NFTEarth_L2!\n\n🎉 LFG #NFTE is #BetterThanBlue 🎉\n\n`
+  const tweetText = `I just joined the $NFTE #Raffle on @NFTEarth_L2!\n\n🎉 LFG #NFTE! 🎉\n\n`
 
   // @ts-ignore
   return (
@@ -209,10 +209,10 @@ export default function Home() {
             <Tabs.Root className="TabsRoot" defaultValue="tab1" style={{ marginTop: 80 }}>
               <Tabs.List className="TabsList" aria-label="Manage your account">
                 <Tabs.Trigger className="TabsTrigger" value="tab1">
-                  Buy Entries
+                  Buy Raffle Entries
                 </Tabs.Trigger>
                 <Tabs.Trigger className="TabsTrigger" value="tab2">
-                  My History
+                  My Raffle History
                 </Tabs.Trigger>
               </Tabs.List>
               <Tabs.Content className="TabsContent" value="tab1">
@@ -300,13 +300,13 @@ export default function Home() {
               )}
               {isSuccess && (
                 <>
-                  <Text style="h6" css={{ color: 'green' }}>Raffle Entry Success !</Text>
+                  <Text style="h6" css={{ color: 'green' }}>Raffle Entry Success!</Text>
                   <Link
                     rel="noreferrer noopener"
                     target="_blank"
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(`https://nftearth.exchange/claim`)}&hashtags=&via=&related=&original_referer=${encodeURIComponent('https://nftearth.exchange')}`}>
                     <Button>
-                      {`Tweet your airdrop win!`}
+                      {`Tweet about your raffle entry!`}
                       <FontAwesomeIcon style={{ marginLeft: 5 }} icon={faTwitter}/>
                     </Button>
                   </Link>

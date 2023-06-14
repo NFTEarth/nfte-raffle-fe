@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+![image](https://github.com/NFTEarth/nfte-raffle-fe/assets/29180454/72f17631-9d76-46ed-a3a3-6d840dcab358)
+
+
 ## Getting Started
 
 First, run the development server:
