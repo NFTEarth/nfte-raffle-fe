@@ -18,14 +18,14 @@ import Head from "next/head";
 const inter = Inter({
   subsets: ['latin'],
 })
-
+     
 const { chains, provider } = configureChains(supportedChains, [
   alchemyProvider({
-    apiKey: process.env.NEXT_PUBLIC_ALCHEMY_OPTIMISM_ID as string,
-    priority: 0
+    apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY!,
+    priority: 1
   }),
   publicProvider({
-    priority: 1
+    priority: 2
   }),
 ], {
   stallTimeout: 10_000

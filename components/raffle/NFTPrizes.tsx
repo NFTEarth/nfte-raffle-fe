@@ -44,7 +44,7 @@ const NFTPrizes = ({prizes, tokens} : NFTPrizeProps) => {
           <FormatCryptoCurrency
             amount={totalPrizeEth}
             address={'0x0000000000000000000000000000000000000000'}
-            decimals={16}
+            decimals={18}
             logoHeight={16}
             maximumFractionDigits={2}
             textStyle="h5"

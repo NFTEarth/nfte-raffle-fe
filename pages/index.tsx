@@ -118,7 +118,7 @@ export default function Home() {
     setRequestIndex(requestIndex+1);
   }
 
-  const tweetText = `I just joined the $NFTE #Raffle on @NFTEarth_L2!\n\n🎉 LFG #NFTE! 🎉\n\n`
+  const tweetText = `I just joined the $NFTE #Raffle on #Arbitrum EEE! @NFTEarth_L2!\n\n🎉 LFG! 🎉\n\n`
 
   // @ts-ignore
   return (
@@ -181,12 +181,12 @@ export default function Home() {
           </Flex>
           <Flex align="center" css={{ flex: 1, gap: 20  }} direction="column">
             <Flex css={{ flex: 1, textAlign: 'center' }} justify="center" direction="column">
-              <Text style="h3">Feeling lucky?</Text>
+              <Text style="h3">Feeling lucky? Get some raffle entries!</Text>
             </Flex>
             <Flex css={{ flex: 1, textAlign: 'center' }} justify="center">
               <Button onClick={() => {
                 entryRef.current?.scrollIntoView()
-              }}>Enter Now</Button>
+              }}>Enter Now!</Button>
             </Flex>
             <Flex
               align="center"

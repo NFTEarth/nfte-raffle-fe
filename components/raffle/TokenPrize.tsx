@@ -24,7 +24,7 @@ const TokenPrize = ({prizes} : TokenPrizeProps) => {
       <Box css={{ borderRadius: 20, backgroundColor: '#222', padding: 20 }}>
         <Flex direction="row" align="center" css={{ mt: '$2', gap: 30 }}>
           <Flex>
-            <Image src="/nftearth-icon-new.png" width={72} height={72} alt="NFTE Token"/>
+            <Image src="/nftearth-icon-new.png" width={72} height={72} alt="NFTE Tokens"/>
           </Flex>
           <Flex justify="between" css={{ flex: 1 }}>
             <Text style="h4">{`${formatNumber(ethers.utils.formatEther(prizeAmountWei).replace(/\.0$/, ''))} NFTE`}</Text>
