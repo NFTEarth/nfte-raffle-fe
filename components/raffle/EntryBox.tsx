@@ -45,7 +45,7 @@ const EntryBox : FC<EntryBoxProps> = (props) => {
   }
 
   return (
-    <Flex css={{ flex: 1, p: 2, borderRadius: 16, backgroundColor: '#2A3136' }}>
+    <Flex css={{ flex: 1, p: 2, borderRadius: 16, backgroundColor: '#77dd77' }}>
       <Flex css={{ flex: 1, p: 16, gap: 5, gridColumn: 'span 1 / span 1' }} direction="column" align="center">
         <Text style="h4">{entriesCount}</Text>
         <Text style="h4">ENTRIES</Text>

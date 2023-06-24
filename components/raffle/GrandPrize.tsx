@@ -15,7 +15,7 @@ const GrandPrize = ({prizes, tokens} : GrandPrizeProps) => {
   const token = tokens.find((t: any) => t.token.contract === prize.prizeAddress.toLowerCase() && t.token.tokenId === parseInt(prize.prizeId.hex).toString())
 
   return (
-    <Box css={{ backgroundColor: 'orange', borderRadius: 20, p: 2, height: 'fit-content' }}>
+    <Box css={{ backgroundColor: 'blue', borderRadius: 20, p: 2, height: 'fit-content' }}>
       <Flex direction="row" align="center" css={{ px: 20, py: 10 }} justify="between">
         <Text style="h4">Grand Prize</Text>
         <FontAwesomeIcon
