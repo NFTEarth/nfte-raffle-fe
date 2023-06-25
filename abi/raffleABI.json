@@ -1,1 +1,1518 @@
-[{"inputs":[{"internalType":"address","name":"_weth","type":"address"},{"internalType":"bytes32","name":"_keyHash","type":"bytes32"},{"internalType":"uint64","name":"_subscriptionId","type":"uint64"},{"internalType":"address","name":"_vrfCoordinator","type":"address"},{"internalType":"address","name":"_owner","type":"address"},{"internalType":"address","name":"_protocolFeeRecipient","type":"address"},{"internalType":"uint16","name":"_protocolFeeBp","type":"uint16"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"AlreadyRefunded","type":"error"},{"inputs":[],"name":"CutoffTimeNotReached","type":"error"},{"inputs":[],"name":"CutoffTimeReached","type":"error"},{"inputs":[],"name":"DrawExpirationTimeNotReached","type":"error"},{"inputs":[],"name":"ERC1155SafeTransferFromFail","type":"error"},{"inputs":[],"name":"ERC20TransferFail","type":"error"},{"inputs":[],"name":"ERC20TransferFromFail","type":"error"},{"inputs":[],"name":"ERC721TransferFromFail","type":"error"},{"inputs":[],"name":"InsufficientNativeTokensSupplied","type":"error"},{"inputs":[],"name":"InvalidCaller","type":"error"},{"inputs":[],"name":"InvalidCurrency","type":"error"},{"inputs":[],"name":"InvalidCutoffTime","type":"error"},{"inputs":[],"name":"InvalidIndex","type":"error"},{"inputs":[],"name":"InvalidPricingOption","type":"error"},{"inputs":[],"name":"InvalidPrize","type":"error"},{"inputs":[],"name":"InvalidPrizesCount","type":"error"},{"inputs":[],"name":"InvalidProtocolFeeBp","type":"error"},{"inputs":[],"name":"InvalidProtocolFeeRecipient","type":"error"},{"inputs":[],"name":"InvalidStatus","type":"error"},{"inputs":[],"name":"InvalidWinnersCount","type":"error"},{"inputs":[],"name":"IsPaused","type":"error"},{"inputs":[],"name":"MaximumEntriesPerParticipantReached","type":"error"},{"inputs":[],"name":"MaximumEntriesReached","type":"error"},{"inputs":[],"name":"NoOngoingTransferInProgress","type":"error"},{"inputs":[],"name":"NotAContract","type":"error"},{"inputs":[],"name":"NotOwner","type":"error"},{"inputs":[],"name":"NotPaused","type":"error"},{"inputs":[{"internalType":"address","name":"have","type":"address"},{"internalType":"address","name":"want","type":"address"}],"name":"OnlyCoordinatorCanFulfill","type":"error"},{"inputs":[],"name":"PrizeAlreadyClaimed","type":"error"},{"inputs":[],"name":"RandomnessRequestAlreadyExists","type":"error"},{"inputs":[],"name":"RandomnessRequestDoesNotExist","type":"error"},{"inputs":[],"name":"ReentrancyFail","type":"error"},{"inputs":[],"name":"RenouncementNotInProgress","type":"error"},{"inputs":[],"name":"TransferAlreadyInProgress","type":"error"},{"inputs":[],"name":"TransferNotInProgress","type":"error"},{"inputs":[],"name":"WrongPotentialOwner","type":"error"},{"anonymous":false,"inputs":[],"name":"CancelOwnershipTransfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address[]","name":"currencies","type":"address[]"},{"indexed":false,"internalType":"bool","name":"isAllowed","type":"bool"}],"name":"CurrenciesStatusUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"raffleId","type":"uint256"},{"indexed":false,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint208","name":"amount","type":"uint208"}],"name":"EntryRefunded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"raffleId","type":"uint256"},{"indexed":false,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint40","name":"entriesCount","type":"uint40"},{"indexed":false,"internalType":"uint208","name":"price","type":"uint208"}],"name":"EntrySold","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"raffleId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"FeesClaimed","type":"event"},{"anonymous":false,"inputs":[],"name":"InitiateOwnershipRenouncement","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":false,"internalType":"address","name":"potentialOwner","type":"address"}],"name":"InitiateOwnershipTransfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"newOwner","type":"address"}],"name":"NewOwner","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"raffleId","type":"uint256"},{"indexed":false,"internalType":"uint256[]","name":"winnerIndex","type":"uint256[]"}],"name":"PrizesClaimed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint16","name":"protocolFeeBp","type":"uint16"}],"name":"ProtocolFeeBpUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"protocolFeeRecipient","type":"address"}],"name":"ProtocolFeeRecipientUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"raffleId","type":"uint256"},{"indexed":false,"internalType":"enum IRaffle.RaffleStatus","name":"status","type":"uint8"}],"name":"RaffleStatusUpdated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"raffleId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"requestId","type":"uint256"}],"name":"RandomnessRequested","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"inputs":[],"name":"KEY_HASH","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_NUMBER_OF_PRIZES_PER_RAFFLE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_NUMBER_OF_WINNERS_PER_RAFFLE","outputs":[{"internalType":"uint40","name":"","type":"uint40"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAXIMUM_PROTOCOL_FEE_BP","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ONE_DAY","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ONE_HUNDRED_PERCENT_BP","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ONE_WEEK","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"PRICING_OPTIONS_PER_RAFFLE","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REQUEST_CONFIRMATIONS","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"SUBSCRIPTION_ID","outputs":[{"internalType":"uint64","name":"","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VRF_COORDINATOR","outputs":[{"internalType":"contract VRFCoordinatorV2Interface","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"WETH","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"cancel","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"cancelAfterRandomnessRequest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"cancelOwnershipTransfer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"claimFees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"raffleId","type":"uint256"},{"internalType":"uint256[]","name":"winnerIndices","type":"uint256[]"}],"internalType":"struct IRaffle.ClaimPrizesCalldata[]","name":"claimPrizesCalldata","type":"tuple[]"}],"name":"claimPrizes","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"currency","type":"address"}],"name":"claimProtocolFees","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"raffleIds","type":"uint256[]"}],"name":"claimRefund","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"confirmOwnershipRenouncement","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"confirmOwnershipTransfer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"uint40","name":"cutoffTime","type":"uint40"},{"internalType":"bool","name":"isMinimumEntriesFixed","type":"bool"},{"internalType":"uint40","name":"minimumEntries","type":"uint40"},{"internalType":"uint40","name":"maximumEntriesPerParticipant","type":"uint40"},{"internalType":"uint16","name":"protocolFeeBp","type":"uint16"},{"internalType":"address","name":"feeTokenAddress","type":"address"},{"components":[{"internalType":"uint40","name":"winnersCount","type":"uint40"},{"internalType":"uint40","name":"cumulativeWinnersCount","type":"uint40"},{"internalType":"enum IRaffle.TokenType","name":"prizeType","type":"uint8"},{"internalType":"uint8","name":"prizeTier","type":"uint8"},{"internalType":"address","name":"prizeAddress","type":"address"},{"internalType":"uint256","name":"prizeId","type":"uint256"},{"internalType":"uint256","name":"prizeAmount","type":"uint256"}],"internalType":"struct IRaffle.Prize[]","name":"prizes","type":"tuple[]"},{"components":[{"internalType":"uint40","name":"entriesCount","type":"uint40"},{"internalType":"uint208","name":"price","type":"uint208"}],"internalType":"struct IRaffle.PricingOption[5]","name":"pricingOptions","type":"tuple[5]"}],"internalType":"struct IRaffle.CreateRaffleCalldata","name":"params","type":"tuple"}],"name":"createRaffle","outputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"depositPrizes","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"raffleId","type":"uint256"},{"internalType":"uint256","name":"pricingOptionIndex","type":"uint256"}],"internalType":"struct IRaffle.EntryCalldata[]","name":"entries","type":"tuple[]"}],"name":"enterRaffles","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"getEntries","outputs":[{"components":[{"internalType":"uint40","name":"currentEntryIndex","type":"uint40"},{"internalType":"address","name":"participant","type":"address"}],"internalType":"struct IRaffle.Entry[]","name":"entries","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"getPricingOptions","outputs":[{"components":[{"internalType":"uint40","name":"entriesCount","type":"uint40"},{"internalType":"uint208","name":"price","type":"uint208"}],"internalType":"struct IRaffle.PricingOption[5]","name":"pricingOptions","type":"tuple[5]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"getPrizes","outputs":[{"components":[{"internalType":"uint40","name":"winnersCount","type":"uint40"},{"internalType":"uint40","name":"cumulativeWinnersCount","type":"uint40"},{"internalType":"enum IRaffle.TokenType","name":"prizeType","type":"uint8"},{"internalType":"uint8","name":"prizeTier","type":"uint8"},{"internalType":"address","name":"prizeAddress","type":"address"},{"internalType":"uint256","name":"prizeId","type":"uint256"},{"internalType":"uint256","name":"prizeAmount","type":"uint256"}],"internalType":"struct IRaffle.Prize[]","name":"prizes","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"getWinners","outputs":[{"components":[{"internalType":"address","name":"participant","type":"address"},{"internalType":"bool","name":"claimed","type":"bool"},{"internalType":"uint8","name":"prizeIndex","type":"uint8"},{"internalType":"uint40","name":"entryIndex","type":"uint40"}],"internalType":"struct IRaffle.Winner[]","name":"winners","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"initiateOwnershipRenouncement","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newPotentialOwner","type":"address"}],"name":"initiateOwnershipTransfer","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"isCurrencyAllowed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"bytes","name":"","type":"bytes"}],"name":"onERC1155Received","outputs":[{"internalType":"bytes4","name":"","type":"bytes4"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ownershipStatus","outputs":[{"internalType":"enum IOwnableTwoSteps.Status","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"potentialOwner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"protocolFeeBp","outputs":[{"internalType":"uint16","name":"","type":"uint16"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"protocolFeeRecipient","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"protocolFeeRecipientClaimableFees","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"raffles","outputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"enum IRaffle.RaffleStatus","name":"status","type":"uint8"},{"internalType":"bool","name":"isMinimumEntriesFixed","type":"bool"},{"internalType":"uint40","name":"cutoffTime","type":"uint40"},{"internalType":"uint40","name":"drawnAt","type":"uint40"},{"internalType":"uint40","name":"minimumEntries","type":"uint40"},{"internalType":"uint40","name":"maximumEntriesPerParticipant","type":"uint40"},{"internalType":"address","name":"feeTokenAddress","type":"address"},{"internalType":"uint16","name":"protocolFeeBp","type":"uint16"},{"internalType":"uint208","name":"claimableFees","type":"uint208"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rafflesCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"rafflesParticipantsStats","outputs":[{"internalType":"uint208","name":"amountPaid","type":"uint208"},{"internalType":"uint40","name":"entriesCount","type":"uint40"},{"internalType":"bool","name":"refunded","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"randomnessRequests","outputs":[{"internalType":"bool","name":"exists","type":"bool"},{"internalType":"uint248","name":"randomWord","type":"uint248"},{"internalType":"uint256","name":"raffleId","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"requestId","type":"uint256"},{"internalType":"uint256[]","name":"randomWords","type":"uint256[]"}],"name":"rawFulfillRandomWords","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"requestId","type":"uint256"}],"name":"selectWinners","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint16","name":"_protocolFeeBp","type":"uint16"}],"name":"setProtocolFeeBp","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_protocolFeeRecipient","type":"address"}],"name":"setProtocolFeeRecipient","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"togglePaused","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"currencies","type":"address[]"},{"internalType":"bool","name":"isAllowed","type":"bool"}],"name":"updateCurrenciesStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"withdrawPrizes","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+[
+  {
+    "type": "constructor",
+    "name": "",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "_weth",
+        "internalType": "address"
+      },
+      {
+        "type": "bytes32",
+        "name": "_keyHash",
+        "internalType": "bytes32"
+      },
+      {
+        "type": "uint64",
+        "name": "_subscriptionId",
+        "internalType": "uint64"
+      },
+      {
+        "type": "address",
+        "name": "_vrfCoordinator",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "_owner",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "_protocolFeeRecipient",
+        "internalType": "address"
+      },
+      {
+        "type": "uint16",
+        "name": "_protocolFeeBp",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "error",
+    "name": "AlreadyRefunded",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "CutoffTimeNotReached",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "CutoffTimeReached",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "DrawExpirationTimeNotReached",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ERC1155SafeTransferFromFail",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ERC20TransferFail",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ERC20TransferFromFail",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ERC721TransferFromFail",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InsufficientNativeTokensSupplied",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidCaller",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidCurrency",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidCutoffTime",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidIndex",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidPricingOption",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidPrize",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidPrizesCount",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidProtocolFeeBp",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidProtocolFeeRecipient",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidStatus",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidWinnersCount",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "IsPaused",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "MaximumEntriesPerParticipantReached",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "MaximumEntriesReached",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NoOngoingTransferInProgress",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotAContract",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotOwner",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotPaused",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "OnlyCoordinatorCanFulfill",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "have",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "want",
+        "internalType": "address"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "PrizeAlreadyClaimed",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "RandomnessRequestAlreadyExists",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "RandomnessRequestDoesNotExist",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ReentrancyFail",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "RenouncementNotInProgress",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "TransferAlreadyInProgress",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "TransferNotInProgress",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "WrongPotentialOwner",
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "event",
+    "name": "CancelOwnershipTransfer",
+    "inputs": [],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "CurrenciesStatusUpdated",
+    "inputs": [
+      {
+        "type": "address[]",
+        "name": "currencies",
+        "indexed": false,
+        "internalType": "address[]"
+      },
+      {
+        "type": "bool",
+        "name": "isAllowed",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EntryRefunded",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "buyer",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "uint208",
+        "name": "amount",
+        "indexed": false,
+        "internalType": "uint208"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "EntrySold",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "buyer",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "uint40",
+        "name": "entriesCount",
+        "indexed": false,
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint208",
+        "name": "price",
+        "indexed": false,
+        "internalType": "uint208"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "FeesClaimed",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "amount",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "InitiateOwnershipRenouncement",
+    "inputs": [],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "InitiateOwnershipTransfer",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "previousOwner",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "potentialOwner",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "NewOwner",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newOwner",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Paused",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PrizesClaimed",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256[]",
+        "name": "winnerIndex",
+        "indexed": false,
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProtocolFeeBpUpdated",
+    "inputs": [
+      {
+        "type": "uint16",
+        "name": "protocolFeeBp",
+        "indexed": false,
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ProtocolFeeRecipientUpdated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "protocolFeeRecipient",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RaffleStatusUpdated",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint8",
+        "name": "status",
+        "indexed": false,
+        "internalType": "enum IRaffle.RaffleStatus"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RandomnessRequested",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "requestId",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Unpaused",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "function",
+    "name": "KEY_HASH",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bytes32",
+        "name": "",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MAXIMUM_NUMBER_OF_PRIZES_PER_RAFFLE",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MAXIMUM_NUMBER_OF_WINNERS_PER_RAFFLE",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint40",
+        "name": "",
+        "internalType": "uint40"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MAXIMUM_PROTOCOL_FEE_BP",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint16",
+        "name": "",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "ONE_DAY",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "ONE_HUNDRED_PERCENT_BP",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "ONE_WEEK",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "PRICING_OPTIONS_PER_RAFFLE",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "REQUEST_CONFIRMATIONS",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint16",
+        "name": "",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "SUBSCRIPTION_ID",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint64",
+        "name": "",
+        "internalType": "uint64"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "VRF_COORDINATOR",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "contract VRFCoordinatorV2Interface"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "WETH",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "cancel",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "cancelAfterRandomnessRequest",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "cancelOwnershipTransfer",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "claimFees",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "claimPrizes",
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "claimPrizesCalldata",
+        "components": [
+          {
+            "type": "uint256",
+            "name": "raffleId",
+            "internalType": "uint256"
+          },
+          {
+            "type": "uint256[]",
+            "name": "winnerIndices",
+            "internalType": "uint256[]"
+          }
+        ],
+        "internalType": "struct IRaffle.ClaimPrizesCalldata[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "claimProtocolFees",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "currency",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "claimRefund",
+    "inputs": [
+      {
+        "type": "uint256[]",
+        "name": "raffleIds",
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "confirmOwnershipRenouncement",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "confirmOwnershipTransfer",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "createRaffle",
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "params",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "cutoffTime",
+            "internalType": "uint40"
+          },
+          {
+            "type": "bool",
+            "name": "isMinimumEntriesFixed",
+            "internalType": "bool"
+          },
+          {
+            "type": "uint40",
+            "name": "minimumEntries",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "maximumEntriesPerParticipant",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint16",
+            "name": "protocolFeeBp",
+            "internalType": "uint16"
+          },
+          {
+            "type": "address",
+            "name": "feeTokenAddress",
+            "internalType": "address"
+          },
+          {
+            "type": "tuple[]",
+            "name": "prizes",
+            "components": [
+              {
+                "internalType": "uint40",
+                "name": "winnersCount",
+                "type": "uint40"
+              },
+              {
+                "internalType": "uint40",
+                "name": "cumulativeWinnersCount",
+                "type": "uint40"
+              },
+              {
+                "internalType": "enum IRaffle.TokenType",
+                "name": "prizeType",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "prizeTier",
+                "type": "uint8"
+              },
+              {
+                "internalType": "address",
+                "name": "prizeAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "prizeId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "prizeAmount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IRaffle.Prize[]"
+          },
+          {
+            "type": "tuple[5]",
+            "name": "pricingOptions",
+            "components": [
+              {
+                "internalType": "uint40",
+                "name": "entriesCount",
+                "type": "uint40"
+              },
+              {
+                "internalType": "uint208",
+                "name": "price",
+                "type": "uint208"
+              }
+            ],
+            "internalType": "struct IRaffle.PricingOption[5]"
+          }
+        ],
+        "internalType": "struct IRaffle.CreateRaffleCalldata"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "depositPrizes",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "enterRaffles",
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "entries",
+        "components": [
+          {
+            "type": "uint256",
+            "name": "raffleId",
+            "internalType": "uint256"
+          },
+          {
+            "type": "uint256",
+            "name": "pricingOptionIndex",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IRaffle.EntryCalldata[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "getEntries",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "entries",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "currentEntryIndex",
+            "internalType": "uint40"
+          },
+          {
+            "type": "address",
+            "name": "participant",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct IRaffle.Entry[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getPricingOptions",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[5]",
+        "name": "pricingOptions",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "entriesCount",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint208",
+            "name": "price",
+            "internalType": "uint208"
+          }
+        ],
+        "internalType": "struct IRaffle.PricingOption[5]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getPrizes",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "prizes",
+        "components": [
+          {
+            "type": "uint40",
+            "name": "winnersCount",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint40",
+            "name": "cumulativeWinnersCount",
+            "internalType": "uint40"
+          },
+          {
+            "type": "uint8",
+            "name": "prizeType",
+            "internalType": "enum IRaffle.TokenType"
+          },
+          {
+            "type": "uint8",
+            "name": "prizeTier",
+            "internalType": "uint8"
+          },
+          {
+            "type": "address",
+            "name": "prizeAddress",
+            "internalType": "address"
+          },
+          {
+            "type": "uint256",
+            "name": "prizeId",
+            "internalType": "uint256"
+          },
+          {
+            "type": "uint256",
+            "name": "prizeAmount",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct IRaffle.Prize[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getWinners",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "winners",
+        "components": [
+          {
+            "type": "address",
+            "name": "participant",
+            "internalType": "address"
+          },
+          {
+            "type": "bool",
+            "name": "claimed",
+            "internalType": "bool"
+          },
+          {
+            "type": "uint8",
+            "name": "prizeIndex",
+            "internalType": "uint8"
+          },
+          {
+            "type": "uint40",
+            "name": "entryIndex",
+            "internalType": "uint40"
+          }
+        ],
+        "internalType": "struct IRaffle.Winner[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "initiateOwnershipRenouncement",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "initiateOwnershipTransfer",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newPotentialOwner",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "isCurrencyAllowed",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "onERC1155Received",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      },
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      },
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      },
+      {
+        "type": "bytes",
+        "name": "",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes4",
+        "name": "",
+        "internalType": "bytes4"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "ownershipStatus",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint8",
+        "name": "",
+        "internalType": "enum IOwnableTwoSteps.Status"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "paused",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "potentialOwner",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "protocolFeeBp",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint16",
+        "name": "",
+        "internalType": "uint16"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "protocolFeeRecipient",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "protocolFeeRecipientClaimableFees",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "raffles",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "owner",
+        "internalType": "address"
+      },
+      {
+        "type": "uint8",
+        "name": "status",
+        "internalType": "enum IRaffle.RaffleStatus"
+      },
+      {
+        "type": "bool",
+        "name": "isMinimumEntriesFixed",
+        "internalType": "bool"
+      },
+      {
+        "type": "uint40",
+        "name": "cutoffTime",
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint40",
+        "name": "drawnAt",
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint40",
+        "name": "minimumEntries",
+        "internalType": "uint40"
+      },
+      {
+        "type": "uint40",
+        "name": "maximumEntriesPerParticipant",
+        "internalType": "uint40"
+      },
+      {
+        "type": "address",
+        "name": "feeTokenAddress",
+        "internalType": "address"
+      },
+      {
+        "type": "uint16",
+        "name": "protocolFeeBp",
+        "internalType": "uint16"
+      },
+      {
+        "type": "uint208",
+        "name": "claimableFees",
+        "internalType": "uint208"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "rafflesCount",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "rafflesParticipantsStats",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      },
+      {
+        "type": "address",
+        "name": "",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint208",
+        "name": "amountPaid",
+        "internalType": "uint208"
+      },
+      {
+        "type": "uint40",
+        "name": "entriesCount",
+        "internalType": "uint40"
+      },
+      {
+        "type": "bool",
+        "name": "refunded",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "randomnessRequests",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "exists",
+        "internalType": "bool"
+      },
+      {
+        "type": "uint248",
+        "name": "randomWord",
+        "internalType": "uint248"
+      },
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "rawFulfillRandomWords",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "requestId",
+        "internalType": "uint256"
+      },
+      {
+        "type": "uint256[]",
+        "name": "randomWords",
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "selectWinners",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "requestId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setProtocolFeeBp",
+    "inputs": [
+      {
+        "type": "uint16",
+        "name": "_protocolFeeBp",
+        "internalType": "uint16"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setProtocolFeeRecipient",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "_protocolFeeRecipient",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "togglePaused",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "updateCurrenciesStatus",
+    "inputs": [
+      {
+        "type": "address[]",
+        "name": "currencies",
+        "internalType": "address[]"
+      },
+      {
+        "type": "bool",
+        "name": "isAllowed",
+        "internalType": "bool"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "withdrawPrizes",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "raffleId",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  }
+][],"name":"togglePaused","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"currencies","type":"address[]"},{"internalType":"bool","name":"isAllowed","type":"bool"}],"name":"updateCurrenciesStatus","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"raffleId","type":"uint256"}],"name":"withdrawPrizes","outputs":[],"stateMutability":"nonpayable","type":"function"}]
