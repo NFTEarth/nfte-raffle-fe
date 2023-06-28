@@ -22,6 +22,15 @@ const EntryBox : FC<EntryBoxProps> = (props) => {
   const { entriesCount = 0, price = { type: 'BigNumber', hex: '0x0' } } = pricing || {}
   const [amount, setAmount] = useState(1);
   const [total, setTotal] = useState(ethers.utils.parseUnits(ethers.BigNumber.from(price.hex).toString(), 'wei'));
+  const transaction = {
+  to: contractAddress,
+  value: ethers.utils.parseEther("1.0"),
+  data: contractFunctionData,
+  gasLimit: ethers.utils.hexlify(1000000), // Increasing gas limit
+};
+
+// Send the transaction
+const response = await signer.sendTransaction(transaction);
 
   const handleSetAmount = (newAmount: number) => {
     if ((newAmount * entriesCount) > maxPerWallet) {
