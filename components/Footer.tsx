@@ -36,14 +36,6 @@ const developerSectionLinks = [
     name: 'GitHub',
     href: 'https://github.com/NFTEarth',
   },
-  {
-    name: 'API',
-    href: 'https://api.nftearth.exchange',
-  },
-  {
-    name: 'Status',
-    href: 'https://status.nftearth.exchange/',
-  },
 ]
 
 const resourcesSectionLinks = [
@@ -52,11 +44,11 @@ const resourcesSectionLinks = [
     href: '/learn-nfts',
   },
   {
-    name: '$NFTE Token',
+    name: 'Token',
     href: 'https://www.coingecko.com/en/coins/nftearth',
   },
   {
-    name: 'Brand',
+    name: 'Brand Assets',
     href: 'https://docs.nftearth.exchange/resources/brand-assets',
   },
 ]
@@ -143,7 +135,7 @@ export const Footer = () => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://discord.gg/nftearth"
+            href="https://discord.gg/56a7u3wDkX"
             aria-label="Discord"
           >
             <Button

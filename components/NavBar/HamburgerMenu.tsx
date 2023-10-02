@@ -230,7 +230,7 @@ const HamburgerMenu = () => {
           </a>
           <a
             aria-label="Discord"
-            href="https://discord.gg/nftearth"
+            href="https://discord.gg/56a7u3wDkX"
             target="_blank"
             style={{
               marginRight: 'auto',

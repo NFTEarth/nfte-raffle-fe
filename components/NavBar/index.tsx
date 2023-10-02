@@ -24,7 +24,7 @@ const Navbar = () => {
   const isMounted = useMounted()
   const { data: balance } = useBalance({
     address,
-    token: '0xb261104a83887ae92392fb5ce5899fcfe5481456'
+    token: '0x51B902f19a56F0c8E409a34a215AD2673EDF3284'
   })
 
   const router = useRouter()
@@ -108,7 +108,7 @@ const Navbar = () => {
                 height={34}
                 alt="NFTEarth Logo"
               />
-              <Text style={"h5"}>NFTEarth Raffle</Text>
+              <Text style={"h5"}>Raffle</Text>
             </Box>
           </Link>
           <Box css={{ flex: 1, px: '$3', width: '100%' }}>
